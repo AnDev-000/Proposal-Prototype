@@ -1,0 +1,179 @@
+<div class="container form-fixed">
+  <form class="form" #formProposal="ngForm">
+    <!-- Grupo de formulario para el título -->
+    <div class="form-group">
+      <h1 class="text-center text-primary">Propuesta</h1>
+    </div>
+
+    <!-- grupo de campos para mostrar el id de una prouesta ya registrada -->
+      <div class="form-group" *ngIf="person.id">
+        <fieldset class="border form-control-lg my-3">
+          <label>N° de propuesta:</label>
+          <label>{{ person.id }}</label>
+        </fieldset>
+      </div>
+
+    <!-- Grupo de campos para los datos del responsable -->
+    <fieldset class="border form-control-lg my-3">
+      <legend class="legend">Responsable</legend>
+      <div class="form-group mb-2 form-control-sm">
+        <label for="nombre">Nombre:</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="nombre"
+          placeholder="Ingrese su nombre"
+          [(ngModel)]="person.responsible"
+          required
+          #responsibleName="ngModel"
+          name="responsibleName"
+        />
+        <div class="alert alert-danger mt-1" [hidden]="responsibleName.valid || responsibleName.pristine">
+          El nombre es requerido
+        </div>
+      </div>
+      <div class="form-group mb-2 form-control-sm">
+        <label for="correo">Correo:</label>
+        <input
+          type="email"
+          class="form-control form-control-sm"
+          id="correo"
+          placeholder="Ingrese su correo"
+          [(ngModel)]="person.email"
+          required
+          email
+          #responsibleEmail="ngModel"
+          name="responsibleEmail"
+        />
+        <div class="alert alert-danger mt-1" [hidden]="responsibleEmail.valid || responsibleEmail.pristine">
+          El correo es requerido y debe ser válido
+        </div>
+      </div>
+      <div class="form-group mb-2 form-control-sm">
+        <label for="fecha-termino">Fecha de Término:</label>
+        <input
+          type="date"
+          class="form-control form-control-sm"
+          id="fecha-termino"
+          [(ngModel)]="person.endDate"
+          required
+          #responsibleEndDate="ngModel"
+          name="endDate"
+        />
+        <div class="alert alert-danger mt-1" [hidden]="responsibleEndDate.valid || responsibleEndDate.pristine">
+          La fecha de término es requerida
+        </div>
+      </div>
+      <div class="form-group mb-2 form-control-sm">
+        <label for="detalles">Detalles:</label>
+        <textarea
+          class="form-control form-control-sm"
+          id="detalles"
+          rows="3"
+          [(ngModel)]="person.details"
+          required
+          #responsbileDetails="ngModel"
+          name="details"
+        ></textarea>
+        <div class="alert alert-danger mt-1" [hidden]="responsbileDetails.valid || responsbileDetails.pristine">
+          Los detalles son requeridos
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Grupo de campos para las notificaciones -->
+    <fieldset class="border form-control-sm my-3">
+      <legend class="legend mt-4">Notificar:</legend>
+
+      <button
+        class="btn btn-primary btn-sm"
+        type="button"
+        *ngIf="!showInputs"
+        (click)="addInputs()"
+      >
+        Añadir
+      </button>
+
+      <div *ngIf="showInputs">
+        <div class="form-group mb-2 form-control-sm">
+          <label for="name">Nombre: </label>
+          <input
+            class="form-control-sm"
+            type="text"
+            placeholder="Nombre"
+            id="name"
+            name="nombre"
+            [(ngModel)]="name"
+          />
+        </div>
+
+        <div class="form-group mb-2 form-control-sm">
+          <label for="occupation">Cargo: </label>
+          <input
+            class="form-control-sm"
+            type="text"
+            placeholder="Cargo"
+            id="occupation"
+            [(ngModel)]="occupation"
+            name="cargo"
+          />
+        </div>
+
+        <div class="form-group mb-2 form-control-sm">
+          <label for="email">Email: </label>
+          <input
+            class="form-control-sm"
+            type="text"
+            placeholder="Email"
+            id="email"
+            [(ngModel)]="email"
+            name="email"
+          />
+        </div>
+
+        <button
+          class="btn btn-outline-success btn-sm btn-fix"
+          type="button"
+          (click)="addContact()"
+          [disabled]="!name || !occupation || !email || !isValidEmail(email)"
+        >
+          Agregar
+        </button>
+        <button
+          class="btn btn-outline-danger btn-sm btn-fix"
+          type="button"
+          (click)="cancelContact()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <!-- Lista de elementos añadidos -->
+      <ul class="list-group">
+        <li
+          class="list-group-item small"
+          *ngFor="let item of array; let i = index"
+        >
+          <button
+            class="btn btn-outline-danger btn-sm btn-fix2"
+            type="button"
+            (click)="deleteArrayElement(i)"
+          >
+            -
+          </button>
+          <!-- Nombre: {{ item.name }} - Cargo: {{ item.occupation }} - Email: {{ item.email }} -->
+          {{ item.name }} - {{ item.occupation }} - {{ item.email }}
+        </li>
+      </ul>
+    </fieldset>
+
+    <!-- Submit -->
+    <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-primary" [disabled]="formProposal.invalid" >Aceptar</button>
+    </div>
+  </form>
+
+  <!-- para verificar campos validos -->
+  <!-- Estado form: {{formProposal.valid}} -->
+
+</div>

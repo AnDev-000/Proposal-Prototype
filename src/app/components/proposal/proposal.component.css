@@ -1,0 +1,17 @@
+
+*{
+    box-sizing: border-box;
+}
+
+.form-fixed{
+    /* margin: 0 0 0 50px; revisar mas tarde, puede darse margin con bootstrap igualmente */
+    font-size: 12px;
+}
+
+.btn-fix{
+    width: 75px;
+}
+.btn-fix2{
+    width: 35px;
+
+}

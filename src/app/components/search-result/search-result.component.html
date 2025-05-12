@@ -1,0 +1,62 @@
+
+<!-- tabla de resultados -->
+<div class="table-responsive table-container-fixed">
+    <table class="table table-hover table-sm"> 
+        <thead>
+            <tr>
+                <th class="col-fix1" scope="col">N° Propuesta</th>
+                <th class="col-fix2" scope="col">Detalle</th>
+                <th class="col-fix3" scope="col">Tipo de actividad</th>
+                <th class="col-fix4" scope="col">Responsable Actividad</th>
+                <th class="col-fix5" scope="col">Fechas descartadas</th>
+                <th class="col-fix6" scope="col">Fecha optima de entrega</th> <!--una semana antes del termino fecha entrega propuesta-->
+                <th class="col-fix7" scope="col">Fecha final de entrega</th> <!--Dia que se concluyo, se entrego la propuesta, puede ser antes de la fecha de entrega propuesta o despues-->
+                <th class="col-fix8" scope="col">Fecha Entrega propuesta</th>   <!--endDate-->
+                <th class="col-fix9" scope="col">Estado</th><!-- icono check, rojo no se entrego, verde se entrego-->
+                <th class="col-fix10" scope="col">Opciones</th>
+                <th class="col-fix11" scope="col">Concluir entrega</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let a of results | filter: filterResults">
+                <td class="col-fix1">{{a.id}}</td>
+                <td class="col-fix2">{{a.details}}</td>
+                <td class="col-fix3">
+                    <!-- <label for="mySelect">Seleccione una opción:</label> -->
+                    <select id="mySelect" [(ngModel)]="a.activityType" class="form-select form-select-sm" aria-label="Seleccione un tipo de actividad">
+                    <option value="" disabled selected>Seleccione una opción</option>
+                    <option *ngFor="let type of activityType" [value]="type">{{type}}</option>
+                    </select>
+                </td> <!--Documentos administrativos,Oferta tecnica, antecedentes de seguridad, calidad, economica -->
+                <td class="col-fix4">{{a.responsible}}</td> 
+                <td>
+                    <!-- Mostrar las fechas de descartados en una lista -->
+                    <ul class="col-fix5">
+                        <li *ngFor="let fecha of a.discarded">
+                        {{ fecha | date: 'dd-MM-yyyy' }}
+                        </li>
+                    </ul>
+                </td>
+                <td class="col-fix6">{{ subtractDays(a.endDate, 7) | date: 'dd-MM-yyyy' }}</td>  <!--esto es momentaneo, solo resta 7 dias, la idea es que muestre una fecha previa esperada para que se entregue la propuesta, deberia ser ajustable por el usuario, preguntar mas tarde por esto... -->
+                <td class="col-fix7">{{a.deliverDate| date: 'dd-MM-yyyy'}}</td>
+                <td class="col-fix8">{{a.endDate | date: 'dd-MM-yyyy'}}</td> 
+                <td class="col-fix9">
+                    <i [class]="getIconState(a).icon" [ngClass]="[getIconState(a).color, 'icon-size']"></i>
+                </td>
+                <td class="col-fix10">
+                    <div class="d-flex justify-content-between"> <!-- El efecto table-hover de bootstrap se deforma en esta zona por el d-flex, esto arregla el efecto hover -->
+                    <button class="btn btn-success btn-sm fa fa-calendar-alt mx-1 " aria-label="Modificar fecha entrega propuesta"></button> 
+                    <button class="btn btn-primary btn-sm fa fa-eye mx-1" aria-label="Ver propuesta completa" (click)="viewResult(a)"></button>
+                    </div>
+                </td> <!-- btn | btn -->
+                <td class="col-fix11">
+                    <div class="form-check form-switch">
+                    <input class="form-check-input" [ngClass]="{'bg-success text-white': a.state, 'bg-danger text-white': !a.state}" type="checkbox" role="switch" id="flexSwitchCheckCheckedDisabled" [checked]="a.state" [disabled]="a.state" (change)="confirmChange($event, a)">
+                    <label class="form-check-label" for="flexSwitchCheckCheckedDisabled">{{a.state ? 'Entregado' : 'No entregado'}}</label>
+                    </div>
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>
