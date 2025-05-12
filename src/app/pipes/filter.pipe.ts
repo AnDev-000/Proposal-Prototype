@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Result } from '../interface/data/result';
 
 @Pipe({
-  name: 'filter'
+  name: 'filter',
+  standalone: true // ✅ Necesario en Angular 19
 })
 export class FilterPipe implements PipeTransform {
 
@@ -11,7 +12,7 @@ export class FilterPipe implements PipeTransform {
     return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 
-  // transformar el dato de entrada "results"
+  // Transformar el dato de entrada "results"
   transform(results: Result[], filterResults: string): Result[] {
     if (!results || !filterResults) {
       return results;

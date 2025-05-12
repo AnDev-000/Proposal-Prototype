@@ -1,22 +1,21 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common'; // ✅ Necesario para directivas como *ngIf
+import { FormsModule } from '@angular/forms'; // ✅ Necesario para ngModel
 import { SearchService } from '../../service/search.service';
 
 @Component({
   selector: 'app-search-bar',
+  standalone: true, // ✅ Convertido a standalone
+  imports: [CommonModule, FormsModule], // ✅ Importar módulos esenciales
   templateUrl: './search-bar.component.html',
-  styleUrl: './search-bar.component.css'
+  styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent {
+  filterResults = ''; // ✅ Definir variable para evitar errores con ngModel
 
-  filterResults = '';
+  constructor(private searchService: SearchService) {}
 
-  constructor(private searchService: SearchService) { }
-
-  // searchInput = "";
-  
-  // Método para buscar
   search() {
     this.searchService.changeSearchInput(this.filterResults);
   }
 }
-
